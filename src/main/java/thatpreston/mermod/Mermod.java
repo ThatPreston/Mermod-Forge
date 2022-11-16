@@ -1,5 +1,6 @@
 package thatpreston.mermod;
 
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +40,11 @@ public class Mermod {
             OriginsIntegration.register(bus);
         }
     }
-    private void commonInit(final FMLCommonSetupEvent event) {}
+    private void commonInit(final FMLCommonSetupEvent event) {
+        CauldronInteraction.WATER.put(RegistryHandler.SEA_NECKLACE.get(), CauldronInteraction.DYED_ITEM);
+        CauldronInteraction.WATER.put(RegistryHandler.MERMAID_BRA_MODIFIER.get(), CauldronInteraction.DYED_ITEM);
+        CauldronInteraction.WATER.put(RegistryHandler.TAIL_GRADIENT_MODIFIER.get(), CauldronInteraction.DYED_ITEM);
+    }
     private void clientInit(final FMLClientSetupEvent event) {
         MermodClient.init();
     }
