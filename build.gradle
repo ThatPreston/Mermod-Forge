@@ -23,8 +23,8 @@ mixin {
 }
 
 version = '1.0'
-group = 'thatpreston.mermod'
-archivesBaseName = 'mermod'
+group = 'thatpreston'
+archivesBaseName = 'mermod-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
