@@ -3,7 +3,6 @@ package thatpreston.mermod.item.modifier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,6 +22,6 @@ public class DyeableSeaNecklaceModifier extends SeaNecklaceModifier implements D
     }
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag context) {
-        tooltip.add(new TranslatableComponent("tooltip.mermod.canBeDyed").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.mermod.canBeDyed").withStyle(ChatFormatting.GRAY));
     }
 }

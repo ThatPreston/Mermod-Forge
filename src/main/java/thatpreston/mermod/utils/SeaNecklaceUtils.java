@@ -3,8 +3,8 @@ package thatpreston.mermod.utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -84,7 +84,7 @@ public class SeaNecklaceUtils {
             String id = modifierType.getId();
             String category = modifierType.getCategory();
             if(compound.getString(category).equals(id)) {
-                TranslatableComponent text = new TranslatableComponent("item.mermod." + id + "_modifier");
+                MutableComponent text = Component.translatable("item.mermod." + id + "_modifier");
                 if(modifierType.isColorable()) {
                     text.setStyle(Style.EMPTY.withColor(compound.getInt(category + "_color")));
                 } else {
@@ -95,7 +95,7 @@ public class SeaNecklaceUtils {
             }
         }
         if(count > 0) {
-            list.add(new TranslatableComponent("tooltip.mermod.modifierHint").withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable("tooltip.mermod.modifierHint").withStyle(ChatFormatting.GRAY));
         }
     }
     public static void giveNecklaceEffects(LivingEntity entity) {
