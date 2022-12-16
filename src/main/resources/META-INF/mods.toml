@@ -3,7 +3,7 @@ loaderVersion="[40,)"
 license="MPL-2.0"
 [[mods]]
 modId="mermod"
-version="1.0"
+version="1.01"
 displayName="Mermod"
 logoFile="icon.png"
 credits="albertosaurio65"
