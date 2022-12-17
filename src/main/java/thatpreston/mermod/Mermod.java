@@ -11,7 +11,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -27,7 +26,6 @@ public class Mermod {
     public Mermod() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::commonInit);
-        bus.addListener(this::clientInit);
         bus.addListener(this::sendIMC);
         MinecraftForge.EVENT_BUS.register(this);
         RegistryHandler.ITEMS.register(bus);
@@ -44,9 +42,6 @@ public class Mermod {
         CauldronInteraction.WATER.put(RegistryHandler.SEA_NECKLACE.get(), CauldronInteraction.DYED_ITEM);
         CauldronInteraction.WATER.put(RegistryHandler.MERMAID_BRA_MODIFIER.get(), CauldronInteraction.DYED_ITEM);
         CauldronInteraction.WATER.put(RegistryHandler.TAIL_GRADIENT_MODIFIER.get(), CauldronInteraction.DYED_ITEM);
-    }
-    private void clientInit(final FMLClientSetupEvent event) {
-        MermodClient.init();
     }
     private void sendIMC(final InterModEnqueueEvent event) {
         if(curiosInstalled) {
