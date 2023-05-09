@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SeaNecklace extends Item implements DyeableLeatherItem, ISeaNecklace {
     public SeaNecklace() {
-        super(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1));
+        super(new Item.Properties().stacksTo(1));
     }
     @Override
     public int getColor(ItemStack stack) {

@@ -1,9 +1,9 @@
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="[45,)"
 license="MPL-2.0"
 [[mods]]
 modId="mermod"
-version="1.11"
+version="1.3"
 displayName="Mermod"
 logoFile="icon.png"
 credits="albertosaurio65, Junnaturefox"
@@ -14,12 +14,12 @@ Mermod adds a magical necklace that transforms you into a merperson in water!
 [[dependencies.mermod]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="[45,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.mermod]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2,1.20)"
+    versionRange="[1.19.4,1.20)"
     ordering="NONE"
     side="BOTH"

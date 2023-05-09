@@ -1,9 +1,11 @@
 package thatpreston.mermod.recipe;
 
 import com.google.common.collect.Lists;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -15,8 +17,8 @@ import thatpreston.mermod.item.modifier.SeaNecklaceModifier;
 import java.util.List;
 
 public class NecklaceModifierRecipe extends CustomRecipe {
-    public NecklaceModifierRecipe(ResourceLocation location) {
-        super(location);
+    public NecklaceModifierRecipe(ResourceLocation location, CraftingBookCategory category) {
+        super(location, category);
     }
     @Override
     public boolean matches(CraftingContainer container, Level level) {
@@ -41,7 +43,7 @@ public class NecklaceModifierRecipe extends CustomRecipe {
         return !necklace.isEmpty() && !modifiers.isEmpty() && SeaNecklaceUtils.canAddModifiers(necklace, modifiers);
     }
     @Override
-    public ItemStack assemble(CraftingContainer container) {
+    public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
         List<ItemStack> modifiers = Lists.newArrayList();
         ItemStack necklace = ItemStack.EMPTY;
         for(int i = 0; i < container.getContainerSize(); i++) {
