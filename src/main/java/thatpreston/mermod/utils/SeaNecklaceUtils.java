@@ -1,15 +1,12 @@
 package thatpreston.mermod.utils;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.IDyeableArmorItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.text.*;
 import thatpreston.mermod.Config;
 import thatpreston.mermod.Mermod;
 import thatpreston.mermod.RegistryHandler;
@@ -21,17 +18,17 @@ import java.util.List;
 
 public class SeaNecklaceUtils {
     public static void addModifier(ItemStack necklace, ItemStack stack) {
-        CompoundTag compound = necklace.getOrCreateTagElement("necklace_modifiers");
+        CompoundNBT compound = necklace.getOrCreateTagElement("necklace_modifiers");
         SeaNecklaceModifier modifier = (SeaNecklaceModifier)stack.getItem();
         String id = modifier.getModifierType().getId();
         String category = modifier.getModifierType().getCategory();
         compound.putString(category, id);
-        if(modifier instanceof DyeableLeatherItem) {
-            compound.putInt(category + "_color", ((DyeableLeatherItem)modifier).getColor(stack));
+        if(modifier instanceof IDyeableArmorItem) {
+            compound.putInt(category + "_color", ((IDyeableArmorItem)modifier).getColor(stack));
         }
     }
     public static ItemStack removeModifier(ItemStack necklace, SeaNecklaceModifier modifier) {
-        CompoundTag compound = necklace.getOrCreateTagElement("necklace_modifiers");
+        CompoundNBT compound = necklace.getOrCreateTagElement("necklace_modifiers");
         NecklaceModifiers modifierType = modifier.getModifierType();
         String id = modifierType.getId();
         String category = modifierType.getCategory();
@@ -57,7 +54,7 @@ public class SeaNecklaceUtils {
         return null;
     }
     public static boolean hasModifier(ItemStack necklace, NecklaceModifiers modifierType) {
-        CompoundTag compound = necklace.getOrCreateTagElement("necklace_modifiers");
+        CompoundNBT compound = necklace.getOrCreateTagElement("necklace_modifiers");
         return compound.contains(modifierType.getCategory());
     }
     public static boolean canAddModifiers(ItemStack necklace, List<ItemStack> modifiers) {
@@ -77,34 +74,34 @@ public class SeaNecklaceUtils {
             addModifier(necklace, modifiers.get(i));
         }
     }
-    public static void appendHoverText(ItemStack necklace, List<Component> list) {
-        CompoundTag compound = necklace.getOrCreateTagElement("necklace_modifiers");
+    public static void appendHoverText(ItemStack necklace, List<ITextComponent> list) {
+        CompoundNBT compound = necklace.getOrCreateTagElement("necklace_modifiers");
         int count = 0;
         for(NecklaceModifiers modifierType : NecklaceModifiers.values()) {
             String id = modifierType.getId();
             String category = modifierType.getCategory();
             if(compound.getString(category).equals(id)) {
-                TranslatableComponent text = new TranslatableComponent("item.mermod." + id + "_modifier");
+                TranslationTextComponent text = new TranslationTextComponent("item.mermod." + id + "_modifier");
                 if(modifierType.isColorable()) {
-                    text.setStyle(Style.EMPTY.withColor(compound.getInt(category + "_color")));
+                    text.setStyle(Style.EMPTY.withColor(Color.fromRgb(compound.getInt(category + "_color"))));
                 } else {
-                    text.setStyle(Style.EMPTY.withColor(modifierType.getTooltipColor()));
+                    text.setStyle(Style.EMPTY.withColor(Color.fromRgb(modifierType.getTooltipColor())));
                 }
                 list.add(text);
                 count++;
             }
         }
         if(count > 0) {
-            list.add(new TranslatableComponent("tooltip.mermod.modifierHint").withStyle(ChatFormatting.GRAY));
+            list.add(new TranslationTextComponent("tooltip.mermod.modifierHint").withStyle(TextFormatting.GRAY));
         }
     }
     public static void giveNecklaceEffects(LivingEntity entity) {
         if(Mermod.checkTailConditions(entity)) {
-            if(Config.SERVER.waterBreathing.get() && !entity.hasEffect(MobEffects.WATER_BREATHING)) {
-                entity.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 200, 0, false, false));
+            if(Config.SERVER.waterBreathing.get() && !entity.hasEffect(Effects.WATER_BREATHING)) {
+                entity.addEffect(new EffectInstance(Effects.WATER_BREATHING, 200, 0, false, false));
             }
-            if(Config.SERVER.nightVision.get() && !entity.hasEffect(MobEffects.NIGHT_VISION)) {
-                entity.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0, false, false));
+            if(Config.SERVER.nightVision.get() && !entity.hasEffect(Effects.NIGHT_VISION)) {
+                entity.addEffect(new EffectInstance(Effects.NIGHT_VISION, 200, 0, false, false));
             }
         }
     }

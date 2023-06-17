@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "thatpreston.mermod.client.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_8",
   "refmap": "mermod.refmap.json",
   "mixins": [
   ],
@@ -10,7 +10,8 @@
     "PlayerRendererMixin",
     "ArmorFeatureRendererMixin",
     "GameRendererMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "ModelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

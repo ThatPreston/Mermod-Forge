@@ -1,33 +1,31 @@
 package thatpreston.mermod.client.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import thatpreston.mermod.Mermod;
-import thatpreston.mermod.MermodClient;
 
 @OnlyIn(Dist.CLIENT)
-public class TailRenderLayer<T extends Player, M extends HumanoidModel<T>> extends RenderLayer<T, M> {
+public class TailRenderLayer<T extends PlayerEntity, M extends BipedModel<T>> extends LayerRenderer<T, M> {
     private TailModel model;
-    public TailRenderLayer(RenderLayerParent<T, M> parent, EntityModelSet set) {
+    public TailRenderLayer(IEntityRenderer<T, M> parent) {
         super(parent);
-        this.model = new TailModel(set.bakeLayer(MermodClient.TAIL));
+        this.model = new TailModel();
     }
     @Override
-    public void render(PoseStack stack, MultiBufferSource source, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float yaw, float pitch) {
+    public void render(MatrixStack stack, IRenderTypeBuffer buffer, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float yaw, float pitch) {
         if(Mermod.checkTailConditions(entity)) {
             MermaidTailStyle style = Mermod.getTailStyle(entity);
             if(style != null) {
                 stack.pushPose();
                 this.model.updatePose(entity, this.getParentModel(), animationProgress);
-                this.model.renderTail(stack, source, light, OverlayTexture.NO_OVERLAY, style);
+                this.model.renderTail(stack, buffer, light, OverlayTexture.NO_OVERLAY, style);
                 stack.popPose();
             }
         }

@@ -1,15 +1,19 @@
 package thatpreston.mermod.item;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
-import net.minecraft.world.level.Level;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.IDyeableArmorItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import thatpreston.mermod.Mermod;
 import thatpreston.mermod.integration.curios.CuriosIntegration;
@@ -17,46 +21,46 @@ import thatpreston.mermod.utils.SeaNecklaceUtils;
 
 import java.util.List;
 
-public class SeaNecklace extends Item implements DyeableLeatherItem, ISeaNecklace {
+public class SeaNecklace extends Item implements IDyeableArmorItem, ISeaNecklace {
     public SeaNecklace() {
-        super(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).stacksTo(1));
+        super(new Item.Properties().tab(ItemGroup.TAB_TOOLS).stacksTo(1));
     }
     @Override
     public int getColor(ItemStack stack) {
-        CompoundTag compound = stack.getTagElement("display");
+        CompoundNBT compound = stack.getTagElement("display");
         return compound != null && compound.contains("color", 99) ? compound.getInt("color") : 16777215;
     }
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack necklace = player.getItemInHand(hand);
         if(player.isCrouching()) {
             ItemStack stack = SeaNecklaceUtils.removeModifier(necklace);
             if(stack != null) {
                 player.addItem(stack);
-                return InteractionResultHolder.success(necklace);
+                return ActionResult.success(necklace);
             }
         }
-        return super.use(level, player, hand);
+        return super.use(world, player, hand);
     }
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if(entity instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity)entity;
-            if(livingEntity.getItemBySlot(EquipmentSlot.CHEST).equals(stack)) {
+            if(livingEntity.getItemBySlot(EquipmentSlotType.CHEST).equals(stack)) {
                 SeaNecklaceUtils.giveNecklaceEffects(livingEntity);
             }
         }
     }
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
         SeaNecklaceUtils.appendHoverText(stack, list);
     }
     @Override
-    public EquipmentSlot getEquipmentSlot(ItemStack stack) {
-        return EquipmentSlot.CHEST;
+    public EquipmentSlotType getEquipmentSlot(ItemStack stack) {
+        return EquipmentSlotType.CHEST;
     }
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag compound) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT compound) {
         if(Mermod.curiosInstalled) {
             return CuriosIntegration.getCapabilityProvider(stack);
         }

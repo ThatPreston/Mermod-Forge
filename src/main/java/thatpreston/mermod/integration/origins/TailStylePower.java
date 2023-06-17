@@ -1,23 +1,47 @@
 package thatpreston.mermod.integration.origins;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.edwinmindcraft.apoli.api.power.factory.PowerFactory;
-import io.github.edwinmindcraft.calio.api.network.CalioCodecHelper;
-import net.minecraft.resources.ResourceLocation;
-import thatpreston.mermod.client.render.MermaidTailStyle;
+import io.github.apace100.origins.power.Power;
+import io.github.apace100.origins.power.PowerType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ResourceLocation;
 
-public class TailStylePower extends PowerFactory<TailStyleConfiguration> {
-    public static final Codec<TailStyleConfiguration> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            CalioCodecHelper.INT.optionalFieldOf("tailColor", 16777215).forGetter(TailStyleConfiguration::tailColor),
-            CalioCodecHelper.BOOL.optionalFieldOf("hasBra", false).forGetter(TailStyleConfiguration::hasBra),
-            CalioCodecHelper.INT.optionalFieldOf("braColor", 16777215).forGetter(TailStyleConfiguration::braColor),
-            CalioCodecHelper.BOOL.optionalFieldOf("hasGradient", false).forGetter(TailStyleConfiguration::hasGradient),
-            CalioCodecHelper.INT.optionalFieldOf("gradientColor", 16777215).forGetter(TailStyleConfiguration::gradientColor),
-            CalioCodecHelper.BOOL.optionalFieldOf("hasGlint", false).forGetter(TailStyleConfiguration::hasGlint),
-            ResourceLocation.CODEC.optionalFieldOf("texture", MermaidTailStyle.DEFAULT_TEXTURE).forGetter(TailStyleConfiguration::texture)
-    ).apply(instance, TailStyleConfiguration::new));
-    public TailStylePower() {
-        super(CODEC);
+public class TailStylePower extends Power {
+    private final int tailColor;
+    private final boolean hasBra;
+    private final int braColor;
+    private final boolean hasGradient;
+    private final int gradientColor;
+    private final boolean hasGlint;
+    private final ResourceLocation texture;
+    public TailStylePower(PowerType<?> type, PlayerEntity player, int tailColor, boolean hasBra, int braColor, boolean hasGradient, int gradientColor, boolean hasGlint, ResourceLocation texture) {
+        super(type, player);
+        this.tailColor = tailColor;
+        this.hasBra = hasBra;
+        this.braColor = braColor;
+        this.hasGradient = hasGradient;
+        this.gradientColor = gradientColor;
+        this.hasGlint = hasGlint;
+        this.texture = texture;
+    }
+    public int getTailColor() {
+        return tailColor;
+    }
+    public boolean getHasBra() {
+        return hasBra;
+    }
+    public int getBraColor() {
+        return braColor;
+    }
+    public boolean getHasGradient() {
+        return hasGradient;
+    }
+    public int getGradientColor() {
+        return gradientColor;
+    }
+    public boolean getHasGlint() {
+        return hasGlint;
+    }
+    public ResourceLocation getTexture() {
+        return texture;
     }
 }

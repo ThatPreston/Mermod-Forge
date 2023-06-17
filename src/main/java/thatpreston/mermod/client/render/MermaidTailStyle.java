@@ -1,9 +1,9 @@
 package thatpreston.mermod.client.render;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.item.IDyeableArmorItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 
 public class MermaidTailStyle {
     public static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation("mermod", "textures/tail/tail.png");
@@ -28,8 +28,8 @@ public class MermaidTailStyle {
         this.texture = texture;
     }
     public MermaidTailStyle(ItemStack necklace) {
-        CompoundTag compound = necklace.getOrCreateTagElement("necklace_modifiers");
-        this.tailColor = ((DyeableLeatherItem)necklace.getItem()).getColor(necklace);
+        CompoundNBT compound = necklace.getOrCreateTagElement("necklace_modifiers");
+        this.tailColor = ((IDyeableArmorItem)necklace.getItem()).getColor(necklace);
         this.hasBra = compound.contains("bra");
         this.braColor = compound.getInt("bra_color");
         this.hasGradient = compound.contains("gradient");
