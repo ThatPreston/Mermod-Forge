@@ -104,7 +104,9 @@ public class TailModel<T extends LivingEntity> extends AgeableListModel<T> {
             idlePose(0);
         } else if(model.riding) {
             idlePose(-90);
-        } else if(entity.isOnGround() && !entity.isSwimming()) {
+        } else if(entity.isVisuallyCrawling()) {
+            idlePose(0);
+        } else if(entity.onGround() && !entity.isSwimming()) {
             landPose();
         } else {
             swimPose(age);

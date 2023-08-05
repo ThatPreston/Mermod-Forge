@@ -28,7 +28,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     }
     @Inject(method = "renderArmorPiece", at = @At("HEAD"), cancellable = true)
     private void onRenderArmorPiece(PoseStack stack, MultiBufferSource source, T entity, EquipmentSlot slot, int i, A model, CallbackInfo info) {
-        if(entity instanceof Player && Mermod.checkTailConditions(entity)) {
+        if(entity instanceof Player && Mermod.shouldRenderTail(entity)) {
             MermaidTailStyle style = Mermod.getTailStyle((Player)entity);
             if(style != null) {
                 boolean hasBra = style.getHasBra();

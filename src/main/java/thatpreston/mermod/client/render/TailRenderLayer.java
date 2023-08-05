@@ -22,7 +22,7 @@ public class TailRenderLayer<T extends Player, M extends HumanoidModel<T>> exten
     }
     @Override
     public void render(PoseStack stack, MultiBufferSource source, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float yaw, float pitch) {
-        if(Mermod.checkTailConditions(entity)) {
+        if(Mermod.shouldRenderTail(entity)) {
             MermaidTailStyle style = Mermod.getTailStyle(entity);
             if(style != null) {
                 stack.pushPose();

@@ -22,7 +22,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     }
     @Inject(method = "setModelProperties", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;isCrouching()Z", shift = At.Shift.AFTER))
     public void onSetModelProperties(AbstractClientPlayer player, CallbackInfo info) {
-        if(Mermod.checkTailConditions(player)) {
+        if(Mermod.shouldRenderTail(player)) {
             MermaidTailStyle style = Mermod.getTailStyle(player);
             if (style != null) {
                 this.getModel().rightLeg.visible = false;

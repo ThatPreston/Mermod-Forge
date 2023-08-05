@@ -1,6 +1,7 @@
 package thatpreston.mermod;
 
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -8,7 +9,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -42,14 +43,14 @@ public class Mermod {
         CauldronInteraction.WATER.put(RegistryHandler.MERMAID_BRA_MODIFIER.get(), CauldronInteraction.DYED_ITEM);
         CauldronInteraction.WATER.put(RegistryHandler.TAIL_GRADIENT_MODIFIER.get(), CauldronInteraction.DYED_ITEM);
     }
-    private void buildCreativeTabs(final CreativeModeTabEvent.BuildContents event) {
-        CreativeModeTab tab = event.getTab();
-        if(tab.equals(CreativeModeTabs.INGREDIENTS)) {
+    private void buildCreativeTabs(final BuildCreativeModeTabContentsEvent event) {
+        ResourceKey<CreativeModeTab> tabKey = event.getTabKey();
+        if(tabKey.equals(CreativeModeTabs.INGREDIENTS)) {
             event.accept(RegistryHandler.SEA_CRYSTAL.get());
             for(SeaNecklaceModifier modifier : RegistryHandler.NECKLACE_MODIFIERS) {
                 event.accept(modifier);
             }
-        } else if(tab.equals(CreativeModeTabs.TOOLS_AND_UTILITIES)) {
+        } else if(tabKey.equals(CreativeModeTabs.TOOLS_AND_UTILITIES)) {
             event.accept(RegistryHandler.SEA_NECKLACE.get());
         }
     }
@@ -68,7 +69,10 @@ public class Mermod {
         return ItemStack.EMPTY;
     }
     public static boolean checkTailConditions(Entity entity) {
-        return !entity.isInvisible() && entity.isInWater();
+        return entity.isInWater();
+    }
+    public static boolean shouldRenderTail(Entity entity) {
+        return !entity.isInvisible() && checkTailConditions(entity);
     }
     public static boolean getPlayerHasTail(Player player) {
         ItemStack necklace = getNecklace(player);
